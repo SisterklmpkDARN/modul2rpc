@@ -1,7 +1,5 @@
 import xmlrpclib
 
-
-
 print "Pilih perkiraan cuaca dibawah ini :"
 print "1. Cuaca Indonesia"
 print "2. Cuaca Dunia"
@@ -67,3 +65,17 @@ if pilih=='3':
 		print "Ketinggian Gelombang : %s" % feed['wave']
 		print "---------------------------------"
 		i+=1
+
+if pilih=='4':
+	feeds = proxy.getCuaca4()
+	print "***Perkiraan Cuaca Jabodetabek***"
+	print "Tanggal : %s" % feeds['tgl']
+	i = 0
+	for feed in feeds['item']:
+		print "Daerah : %s" % feed['daerah']
+		print "Cuaca Pagi : %s" % feed['pagi']
+		print "Cuaca Siang : %s" % feed['siang']
+		print "Cuaca Malam : %s" % feed['malam']
+		print "---------------------------------"
+		i+=1
+	
