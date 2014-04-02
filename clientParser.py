@@ -3,9 +3,9 @@ import xmlrpclib
 print "Pilih perkiraan cuaca dibawah ini :"
 print "1. Cuaca Indonesia"
 print "2. Cuaca Dunia"
-print "3. Cuaca Jabodetabek1"
-print "4. Cuaca Harian"
-print "5. Cuaca Wisata"
+print "3. Cuaca Wisata"
+print "4. Cuaca Jabodetabek"
+print "5. Cuaca Harian Indonesia"
 print "6. Exit"
 pilih = raw_input("Pilihanmu : ").strip()
 
@@ -59,7 +59,7 @@ if pilih=='3':
 	for feed in feeds['item']:
 		print "Wilayah : %s" % feed['area']
 		print "Cuaca : %s" % feed['weather']
-		print "Simbol Cuaca : %s" % feed['weatherSym']
+		#print "Simbol Cuaca : %s" % feed['weatherSym']
 		print "Suhu : %s" % feed['temp']
 		print "Kelembapan udara : %s" % feed['humidity']
 		print "Ketinggian Gelombang : %s" % feed['wave']
@@ -78,4 +78,25 @@ if pilih=='4':
 		print "Cuaca Malam : %s" % feed['malam']
 		print "---------------------------------"
 		i+=1
-	
+
+if pilih=='5':
+	feeds = proxy.getCuaca5()
+	print "***Perkiraan Cuaca Harian Indonesia***"
+	print "Update : %s" % feeds['update']
+	print "Jam Update : %s" % feeds['jamupdate']
+	i = 0
+	for feed in feeds['item']:
+		print "Valid : %s" % feed['valid']
+		print "Cuaca : %s" % feed['weather']
+		print "Arah Angin : %s" % feed['winddirection']
+		print "Kecepatan Angin : %s" % feed['windspeed']
+		print "Suhu : %s" % feed['temperature']
+		print "Kelembapan : %s" % feed['humidity']
+		print "Waktu Sunrise : %s" % feed['sunrise']
+		print "Waktu Sunset : %s" % feed['sunset']
+		print "Waktu Moonrise : %s" % feed['moonrise']
+		print "Waktu Moonset : %s" % feed['moonset']
+		print "Tinggi Gelombang Utara : %s" % feed['waveheightnortcoast']
+		print "Tinggi Gelombang Selatan : %s" % feed['waveheightsouthcoast']
+		print "---------------------------------"
+		i+=1

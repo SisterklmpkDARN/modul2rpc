@@ -148,8 +148,8 @@ def getCuaca3():
 			dataItem['area'] = area.childNodes[0].data
 			weather = row.getElementsByTagName('Weather')[0]
 			dataItem['weather'] = weather.childNodes[0].data
-			weatherSym = row.getElementsByTagName('WeatherSymbol')[0]
-			dataItem['weatherSym'] = weatherSym.childNodes[0].data
+			#weatherSym = row.getElementsByTagName('WeatherSymbol')[0]
+			#dataItem['weatherSym'] = weatherSym.childNodes[0].data
 			temp = row.getElementsByTagName('Temperature')[0]
 			dataItem['temp'] = temp.childNodes[0].data
 			humidity = row.getElementsByTagName('Humidity')[0]
@@ -173,7 +173,6 @@ def getCuaca4():
 	
 	xml = {}
 	
-	#get all Tanggal
 	tanggal = cuaca.getElementsByTagName("Tanggal")[0]
 	xml['tgl'] = tanggal.childNodes[0].data
 	#print detil tanggal
@@ -197,10 +196,63 @@ def getCuaca4():
 			collections.append(dataItem)
 			i+=1
 			xml['item'] = collections
-			
-		#peringatan = isi.getElementsByTagName("Peringatan")
-		#xml['peringatan'] = peringatan.childNodes[0].data
-	return xml	
+	return xml
+
+def getCuaca5():
+        file1 = urllib2.urlopen('http://data.bmkg.go.id/cuaca_harian_id.xml')
+	data1 = file1.read()
+	file1.close()
+
+	dom1 = parseString(data1)
+
+	cuaca = dom1.documentElement
+	
+	xml = {}
+	
+	#get all Tanggal
+	tanggal = cuaca.getElementsByTagName("Date")[0]
+	update = tanggal.getElementsByTagName("Update")[0]
+	xml['update'] = update.childNodes[0].data
+	jamupdate = tanggal.getElementsByTagName("JamUpdate")[0]
+	xml['jamupdate'] = jamupdate.childNodes[0].data
+	#print detil tanggal
+		
+	isis = cuaca.getElementsByTagName("Forecast")
+	for isi in isis:
+		rows = isi.getElementsByTagName("Row")
+		collections = []
+		i = 0
+		for row in rows[:]:
+			dataItem = {}
+			print "-------------------"
+			daerah = row.getElementsByTagName('Valid')[0]
+			dataItem['valid'] = daerah.childNodes[0].data
+			pagi = row.getElementsByTagName('Weather')[0]
+			dataItem['weather'] = pagi.childNodes[0].data
+			siang = row.getElementsByTagName('WindDirection')[0]
+			dataItem['winddirection'] = siang.childNodes[0].data
+			malam = row.getElementsByTagName('WindSpeed')[0]
+			dataItem['windspeed'] = malam.childNodes[0].data
+			malam = row.getElementsByTagName('Temperature')[0]
+			dataItem['temperature'] = malam.childNodes[0].data
+			malam = row.getElementsByTagName('Humidity')[0]
+			dataItem['humidity'] = malam.childNodes[0].data
+			malam = row.getElementsByTagName('Sunrise')[0]
+			dataItem['sunrise'] = malam.childNodes[0].data
+			malam = row.getElementsByTagName('Sunset')[0]
+			dataItem['sunset'] = malam.childNodes[0].data
+			malam = row.getElementsByTagName('Moonrise')[0]
+			dataItem['moonrise'] = malam.childNodes[0].data
+			malam = row.getElementsByTagName('Moonset')[0]
+			dataItem['moonset'] = malam.childNodes[0].data
+			malam = row.getElementsByTagName('WaveHeightNortCoast')[0]
+			dataItem['waveheightnortcoast'] = malam.childNodes[0].data
+			malam = row.getElementsByTagName('WaveHeightSouthCoast')[0]
+			dataItem['waveheightsouthcoast'] = malam.childNodes[0].data
+			collections.append(dataItem)
+			i+=1
+			xml['item'] = collections
+	return xml
 	
 server = SimpleXMLRPCServer(("localhost", 8000))
 print "Listening on  port 8000.."
@@ -210,6 +262,7 @@ server.register_function(getCuaca1, 'getCuaca1')
 server.register_function(getCuaca2, 'getCuaca2')
 server.register_function(getCuaca3, 'getCuaca3')
 server.register_function(getCuaca4, 'getCuaca4')
+server.register_function(getCuaca5, 'getCuaca5')
 server.serve_forever()
 #print data
 #------------------------------------------------------------------------
